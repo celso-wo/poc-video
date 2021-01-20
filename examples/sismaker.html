@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Sismaker</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato:wght@700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        font-family: 'Lato', sans-serif;
+        color: yellow;
+        padding: 0;
+        margin: 0;
+      }
+
+      #scene {
+        overflow: hidden;
+        width: 480px;
+        height: 480px;
+      }
+
+      .slide-container {
+        width: 960px;
+      }
+
+      .slide {
+        height: 480px;
+        overflow: hidden;
+        position: relative;
+        width: 480px;
+        float: left;
+      }
+
+      .slide .slide-background {
+        height: 480px;
+      }
+
+      .slide .slide-content {
+        top: 200px;
+        left: -32px;
+        position: absolute;
+        text-shadow: 2px 2px black;
+      }
+
+      html.is-transparent #scene {
+        background: transparent;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- The scene element will be rendered to the video file. -->
+    <div id="scene">
+      <div class="slide-container">
+        <div id="slide01" class="slide">
+          <img class="slide-background" src="images/paris.jpg" />
+          <div class="slide-content">
+            <h1>Paris</h1>
+          </div>
+        </div>
+        <div id="slide02" class="slide">
+          <img class="slide-background" src="images/londres.jpeg" />
+          <div class="slide-content">
+            <h1>Londres</h1>
+          </div>
+        </div>
+        <div id="slide03" class="slide">
+          <img class="slide-background" src="images/sorocaba.jpg" />
+          <div class="slide-content">
+            <img src="https://sismaker.com/assets/img/logo-sismaker.png" />
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/TweenMax.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.6.0/gsap.min.js"></script> -->
+
+    <script>
+      function removeElement(element) {
+        if (typeof element === 'string') {
+          element = document.querySelector(element)
+        }
+        return function () {
+          element.parentNode.removeChild(element)
+        }
+      }
+
+      const duration = 5
+      const timeline = new TimelineMax()
+      timeline
+        .to('#slide01 .slide-background', duration, { x: -100 }, 0)
+        .to('#slide01 .slide-content', duration, { x: 64 }, 0)
+        .call(removeElement('#slide01'))
+        .to('#slide02 .slide-background', duration, { x: -100 }, 1 * duration)
+        .to('#slide02 .slide-content', duration, { x: 64 }, 1 * duration)
+        .call(removeElement('#slide02'))
+        .to('#slide03 .slide-background', duration, { x: -100 }, 2 * duration)
+        .to('#slide03 .slide-content', duration, { x: 64 }, 2 * duration)
+
+      const fps = 60
+      const getInfo = () => ({
+        fps,
+        numberOfFrames: timeline.duration() * fps,
+      })
+
+      const seekToFrame = (frame) => {
+        timeline.seek(frame / fps)
+      }
+    </script>
+  </body>
+</html>
